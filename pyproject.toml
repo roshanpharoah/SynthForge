@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "synthforge"
+version = "0.1.0"
+description = "Local-first enterprise synthetic data platform: ingestion, generative models, DP, evaluation, governance."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "SynthForge Contributors" }]
+keywords = ["synthetic-data", "privacy", "differential-privacy", "generative-models", "healthcare"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "scipy>=1.11",
+  "scikit-learn>=1.4",
+  "torch>=2.2",
+  "pydantic>=2.6",
+  "pydantic-settings>=2.2",
+  "typer>=0.12",
+  "sqlalchemy>=2.0",
+  "duckdb>=1.0",
+  "pyarrow>=15",
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "python-multipart>=0.0.9",
+  "jinja2>=3.1",
+  "nibabel>=5.2",
+  "pydicom>=2.4",
+  "wfdb>=4.1",
+  "openpyxl>=3.1",
+  "psutil>=5.9",
+  "fpdf2>=2.7",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8", "pytest-cov>=5", "hypothesis>=6", "httpx>=0.27",
+  "ruff>=0.5", "mypy>=1.10", "types-PyYAML", "types-psutil",
+]
+dp-crosscheck = ["opacus>=1.5"]
+postgres = ["psycopg[binary]>=3.1"]
+mne-edf = ["mne>=1.6"]
+
+[project.scripts]
+synthforge = "synthforge.cli.main:app"
+
+[project.urls]
+Homepage = "https://example.invalid/synthforge"
+Documentation = "https://example.invalid/synthforge/docs"
+
+[tool.setuptools.packages.find]
+include = ["synthforge*"]
+
+[tool.setuptools.package-data]
+synthforge = ["ui/dist/**/*", "templates/**/*", "db/migrations/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+  "slow: long-running test",
+  "gpu: requires a GPU",
+]
+filterwarnings = [
+  "ignore::DeprecationWarning:torch.*",
+  "ignore::FutureWarning:sklearn.*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["synthforge/ui/dist", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4", "SIM"]
+ignore = ["E501", "B008", "SIM108", "B905"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_ignores = false
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["synthforge/ui/", "tests/"]
+
+[tool.coverage.run]
+source = ["synthforge"]
+omit = ["synthforge/ui/*", "synthforge/api/*", "synthforge/cli/*"]

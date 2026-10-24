@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local runtime data and artifacts (never commit real or generated data)
+.synthforge/
+*.sqlite
+*.db
+artifacts/
+uploads/
+reports/
+_smoke*/
+_tmp*/
+
+# Video / screen-recording content
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wmv
+*.flv
+video/
+videos/
+recordings/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

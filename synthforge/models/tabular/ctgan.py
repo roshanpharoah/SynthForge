@@ -343,8 +343,12 @@ class CTGANSynthesizer(BaseTabularSynthesizer):
                     critic = self.critic
                     params = make_functional_params(critic)
 
-                    def loss_single(p: dict[str, torch.Tensor], single: torch.Tensor) -> torch.Tensor:
-                        logit = torch.func.functional_call(critic, p, (single.unsqueeze(0),)).squeeze(0)
+                    def loss_single(
+                        p: dict[str, torch.Tensor],
+                        single: torch.Tensor,
+                        _critic: nn.Module = critic,
+                    ) -> torch.Tensor:
+                        logit = torch.func.functional_call(_critic, p, (single.unsqueeze(0),)).squeeze(0)
                         return F.binary_cross_entropy_with_logits(logit, torch.ones_like(logit))
 
                     real_pack = self._pack(real, cond, 1)
